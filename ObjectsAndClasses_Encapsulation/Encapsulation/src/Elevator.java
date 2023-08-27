@@ -20,6 +20,7 @@ public class Elevator {
         while (currentFloor != floor) {
             if (floor == currentFloor || floor < minFloor || floor > maxFloor) {
                 System.out.println("Этаж введен неверно");
+                break;
             }
 
             if (currentFloor > floor) {
