@@ -8,7 +8,6 @@ public class Dimensions {
         this.width = width;
         this.height = height;
         this.length = length;
-        getVolume();
     }
 
     public String toString() {
