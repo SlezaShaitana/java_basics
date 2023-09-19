@@ -1,6 +1,12 @@
 public class Basket {
 
+    private static int totalQuantity = 0;
+    private static int totalCost = 0;
+    private static double averagePrice;
+    private static double priceAllBaskets;
+
     private static int count = 0;
+    private static int price = 0;
     private String items = "";
     private int totalPrice = 0;
     private int limit;
@@ -35,6 +41,8 @@ public class Basket {
         add(name, price, count);
         items = items + weight;
         totalWeight = totalWeight + (count * weight);
+        increaseQuantity(count);
+        increaseCost(price, count);
     }
 
     public void add(String name, int price) {
@@ -85,5 +93,28 @@ public class Basket {
         } else {
             System.out.println(items);
         }
+    }
+
+    public static void increaseQuantity(int count) {
+        totalQuantity = totalQuantity + count;
+    }
+
+    public static void increaseCost(int price, int count) {
+        totalCost = totalCost + count * price;
+    }
+
+    public static int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public static int getTotalCost() {
+        return totalCost;
+    }
+
+    public static double calculateAveragePrice() {
+        return averagePrice = totalCost / totalQuantity;
+    }
+    public static double calculatePriceAllBaskets() {
+        return priceAllBaskets = totalCost / count;
     }
 }
