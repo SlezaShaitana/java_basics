@@ -1,12 +1,9 @@
 public class Basket {
 
-    private static int totalQuantity = 0;
-    private static int totalCost = 0;
-    private static double averagePrice;
-    private static double priceAllBaskets;
+    private static int allBasketsItemsCount = 0;
+    private static int allBasketsPrice = 0;
 
     private static int count = 0;
-    private static int price = 0;
     private String items = "";
     private int totalPrice = 0;
     private int limit;
@@ -41,8 +38,6 @@ public class Basket {
         add(name, price, count);
         items = items + weight;
         totalWeight = totalWeight + (count * weight);
-        increaseQuantity(count);
-        increaseCost(price, count);
     }
 
     public void add(String name, int price) {
@@ -65,13 +60,16 @@ public class Basket {
         }
 
         items = items + "\n" + name + " - " +
-            count + " шт. - " + price;
+            count + " шт. - " + price + " ";
         totalPrice = totalPrice + count * price;
+        increaseAllBasketsItemsCount(count);
+        increaseAllBasketsPrice(price, count);
     }
 
     public void clear() {
         items = "";
         totalPrice = 0;
+        totalWeight = 0;
     }
 
     public int getTotalPrice() {
@@ -91,30 +89,32 @@ public class Basket {
         if (items.isEmpty()) {
             System.out.println("Корзина пуста");
         } else {
-            System.out.println(items);
+            System.out.println(items +
+                    "\n" + "Общая стоимость корзины :" + totalPrice +
+                    "\n" + "Общий вес корзины :" + totalWeight);
         }
     }
 
-    public static void increaseQuantity(int count) {
-        totalQuantity = totalQuantity + count;
+    public static void increaseAllBasketsItemsCount(int count) {
+        allBasketsItemsCount = allBasketsItemsCount + count;
     }
 
-    public static void increaseCost(int price, int count) {
-        totalCost = totalCost + count * price;
+    public static void increaseAllBasketsPrice(int price, int count) {
+        allBasketsPrice = allBasketsPrice + count * price;
     }
 
-    public static int getTotalQuantity() {
-        return totalQuantity;
+    public static int getAllBasketsItemsCount() {
+        return allBasketsItemsCount;
     }
 
-    public static int getTotalCost() {
-        return totalCost;
+    public static int getAllBasketsPrice() {
+        return allBasketsPrice;
     }
 
-    public static double calculateAveragePrice() {
-        return averagePrice = totalCost / totalQuantity;
+    public static double calculateItemAveragePrice() {
+        return allBasketsPrice / allBasketsItemsCount;
     }
-    public static double calculatePriceAllBaskets() {
-        return priceAllBaskets = totalCost / count;
+    public static double calculateBasketAveragePrice() {
+        return allBasketsPrice / count;
     }
 }
