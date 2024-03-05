@@ -7,7 +7,6 @@ public class Operator implements Employee{
     private double monthSalary;
     NumberFormat format = new DecimalFormat("0");
     public Operator(Company company) {
-        company.countEmployees ++;
         this.company = company;
         Random random = new Random();
         monthSalary = random.nextInt(60_000 - 50_000) + 50_000;

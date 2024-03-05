@@ -3,18 +3,18 @@ public class Main {
     public static void main(String[] args) {
         Company orion = new Company("Орион");
 
-        for (int i = 0; i < 270; i ++) {
-            for (i = 0; i < 180; i ++){
+        for (int i = 0; i < 270; i++) {
+            for (i = 0; i < 180; i++) {
                 orion.hire(new Operator(orion));
             }
             for (i = 180; i < 260; i++) {
                 orion.hire(new Manager(orion));
             }
-            for (i = 260; i < 270; i ++) {
+            for (i = 260; i < 270; i++) {
                 orion.hire(new TopManager(orion));
             }
         }
-        System.out.println("Всего сотрудников: " + orion.getCountEmployees());
+        System.out.println("Всего сотрудников: " + orion.getListOfAllEmployees().size());
 
         for (Employee lowestSalaryStaffList : orion.getLowestSalaryStaff(30)) {
             System.out.println(lowestSalaryStaffList);
@@ -28,7 +28,7 @@ public class Main {
 
         int employeeListSize = orion.getListOfAllEmployees().size();
 
-        for (int i = 0; i < employeeListSize / 2; i ++) {
+        for (int i = 0; i < employeeListSize / 2; i++) {
             orion.fire(orion.getListOfAllEmployees().get(0));
         }
 
@@ -40,7 +40,7 @@ public class Main {
             System.out.println(TopSalaryStaffList);
         }
 
-        System.out.println("Всего сотрудников: " + orion.getCountEmployees());
-
+        System.out.println("Всего сотрудников: " + orion.getListOfAllEmployees().size());
+        System.out.println(orion.getCompanyIncome());
     }
 }
