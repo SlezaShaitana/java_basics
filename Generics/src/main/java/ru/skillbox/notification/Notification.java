@@ -7,5 +7,5 @@ public interface Notification {
     /**
      * @return форматированные тело сообщений
      */
-    String formattedMessage();
+    String formattedMessage(String message);
 }
