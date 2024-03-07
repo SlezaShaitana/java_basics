@@ -11,7 +11,6 @@ public class EmailNotificationSender implements NotificationSender<EmailNotifica
         System.out.println("EMAIL" + "\n" + "subject: " + notification.getSubject());
         System.out.println("receivers: " + String.join(", ", notification.getReceivers()));
         System.out.println("message: " + notification.formattedMessage("Спасибо за регистрацию на сервисе!") + "\n");
-
     }
 
     @Override

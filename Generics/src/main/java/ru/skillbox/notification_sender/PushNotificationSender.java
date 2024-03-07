@@ -12,7 +12,6 @@ public class PushNotificationSender implements NotificationSender<PushNotificati
         System.out.println("PUSH" + "\n" + "subject: " + notification.getTitle());
         System.out.println("receivers: " + String.join(", ", notification.getReceiver()));
         System.out.println("message: " + notification.formattedMessage("Спасибо за регистрацию на сервисе!") + "\n");
-
     }
 
     @Override

@@ -1,6 +1,5 @@
 package ru.skillbox;
 
-import lombok.Getter;
 import ru.skillbox.notification.EmailNotification;
 import ru.skillbox.notification.PushNotification;
 import ru.skillbox.notification.SmsNotification;
@@ -12,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    private static int q;
+
     public static void main(String[] args) {
-        //TODO: написать работу с уведомлениями и удалить эту строку
         SmsNotificationSender smsSender = new SmsNotificationSender();
         List<SmsNotification> smsNotifications = new ArrayList<>();
 
