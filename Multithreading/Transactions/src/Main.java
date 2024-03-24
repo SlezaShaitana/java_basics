@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        Account account1 = new Account(200000, "A1");
+        Account account1 = new Account(10010, "A1");
         Account account2 = new Account(700000, "A2");
 
         Account account3 = new Account(100000, "A3");

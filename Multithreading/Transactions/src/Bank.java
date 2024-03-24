@@ -1,14 +1,14 @@
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Bank {
 
-    private Map<String, Account> accounts = new Hashtable<>();
+    private Map<String, Account> accounts = new ConcurrentHashMap<>();
     private final Random random = new Random();
     private static final long LIMIT = 50_000;
-    
+
 
     public synchronized boolean isFraud(String fromAccountNum, String toAccountNum, long amount)
             throws InterruptedException {
@@ -29,40 +29,42 @@ public class Bank {
     public void transfer(String fromAccountNum, String toAccountNum, long amount) {
         Account fromAccount = accounts.get(fromAccountNum);
         Account toAccount = accounts.get(toAccountNum);
+
+        boolean amountMoreThanLimit = amount >= LIMIT;
+        boolean amountLessThanLimit = amount <= LIMIT;
+
+        boolean hasFraudBeenDetected = false;
+
         if (amount <= fromAccount.getMoney()) {
-            if (!(fromAccount.getBlockStatus() || toAccount.getBlockStatus())) {
-                if (amount < LIMIT) {
+            if (!(fromAccount.getBlockStatus() && toAccount.getBlockStatus())) {
+                if (amountMoreThanLimit) {
+                    try {
+                        if (isFraud(fromAccountNum, toAccountNum, amount)) {
+                            hasFraudBeenDetected = true;
+                            synchronized (fromAccount) {
+                                fromAccount.blockAccount();
+                            }
+                            synchronized (toAccount) {
+                                toAccount.blockAccount();
+                            }
+                        }
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                if (amountLessThanLimit || !hasFraudBeenDetected) {
                     synchronized (fromAccount) {
                         fromAccount.setMoney(fromAccount.getMoney() - amount);
                     }
                     synchronized (toAccount) {
                         toAccount.setMoney(toAccount.getMoney() + amount);
                     }
-                } else {
-                    try {
-                        if (isFraud(fromAccountNum, toAccountNum, amount)) {
-                            synchronized (fromAccount) {
-                                fromAccount.blockedAccount();
-                            }
-                            synchronized (toAccount) {
-                                toAccount.blockedAccount();
-                            }
-
-                        } else {
-                            synchronized (fromAccount) {
-                                fromAccount.setMoney(fromAccount.getMoney() - amount);
-                            }
-                            synchronized (toAccount) {
-                                toAccount.setMoney(toAccount.getMoney() + amount);
-                            }
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
-            } else {
-                System.out.println("Недостаточно средств");
             }
+
+        } else {
+            System.out.println("Недостаточно средств!");
         }
     }
 

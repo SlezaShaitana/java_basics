@@ -1,8 +1,8 @@
 public class Account {
 
-    private long money;
+    private volatile long money;
     private String accNumber;
-    private volatile Boolean isBlocked;
+    private volatile boolean isBlocked;
 
     public Account(long money, String accNumber) {
         this.money = money;
@@ -10,7 +10,7 @@ public class Account {
         isBlocked = false;
     }
 
-    public void blockedAccount() {
+    public void blockAccount() {
         isBlocked = true;
     }
 
@@ -39,7 +39,7 @@ public class Account {
         return "Account{" +
                 "money=" + money +
                 ", accNumber='" + accNumber + '\'' +
-                ", isBlocked=" + isBlocked +
+                ", isBlocked=" + (isBlocked? "Yes" : "No") +
                 '}';
     }
 }
