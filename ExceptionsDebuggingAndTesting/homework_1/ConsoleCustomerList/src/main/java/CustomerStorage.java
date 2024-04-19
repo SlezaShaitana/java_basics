@@ -16,6 +16,16 @@ public class CustomerStorage {
 
         String[] components = data.split("\\s+");
         String name = components[INDEX_NAME] + " " + components[INDEX_SURNAME];
+
+        if (components.length > 4) {
+            throw new MoreFiveWordsException("Передано более 4 слов");
+        }
+        if (!components[INDEX_PHONE].matches("^((\\+7|7|8)+([0-9]){10})$")) {
+            throw new IncorrectPhoneException("Неверный формат номера телефона");
+        }
+        if (!components[INDEX_EMAIL].matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IncorrectEmailException("Неверный формат email");
+        }
         storage.put(name, new Customer(name, components[INDEX_PHONE], components[INDEX_EMAIL]));
     }
 
