@@ -1,41 +1,25 @@
-import java.io.FileOutputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Loader {
+    private static final int REGION_AMOUNT = 199;
+    private static final int THREAD_AMOUNT = 5;
+    private static int coreCount = Runtime.getRuntime().availableProcessors();
 
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis();
-
-        FileOutputStream writer = new FileOutputStream("res/numbers.txt");
-
-        char letters[] = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
-        for (int number = 1; number < 1000; number++) {
-            int regionCode = 199;
-            for (char firstLetter : letters) {
-                for (char secondLetter : letters) {
-                    for (char thirdLetter : letters) {
-                        String carNumber = firstLetter + padNumber(number, 3) +
-                            secondLetter + thirdLetter + padNumber(regionCode, 2);
-                        writer.write(carNumber.getBytes());
-                        writer.write('\n');
-                    }
-                }
-            }
+        int part = REGION_AMOUNT / THREAD_AMOUNT;
+        int totalWillBeWritten = REGION_AMOUNT - REGION_AMOUNT % THREAD_AMOUNT;
+        ExecutorService pool = Executors.newFixedThreadPool(THREAD_AMOUNT);
+        for (int i = 0; i < THREAD_AMOUNT; i++) {
+            int regionStart = part * i;
+            int regionFinish = regionStart + part - 1;
+            pool.submit(new NumberGeneration(start, regionStart, regionFinish, i));
         }
 
-        writer.flush();
-        writer.close();
-
-        System.out.println((System.currentTimeMillis() - start) + " ms");
-    }
-
-    private static String padNumber(int number, int numberLength) {
-        String numberStr = Integer.toString(number);
-        int padSize = numberLength - numberStr.length();
-
-        for (int i = 0; i < padSize; i++) {
-            numberStr = '0' + numberStr;
+        if (totalWillBeWritten != REGION_AMOUNT) {
+            pool.submit(new NumberGeneration(start, totalWillBeWritten, REGION_AMOUNT, THREAD_AMOUNT));
         }
-
-        return numberStr;
+        pool.shutdown();
     }
 }
